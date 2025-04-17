@@ -7,6 +7,7 @@ import Footer from "../components/footer";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 const Login = () => {
   const router = useRouter();
@@ -37,7 +38,7 @@ const Login = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/login",
+        `${baseUrl}/login`,
         userData,
         {
           headers: {

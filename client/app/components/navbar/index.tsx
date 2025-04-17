@@ -9,7 +9,7 @@ const Navbar = () => {
   const { user, loading, error } = getUser();
 
   return (
-    <nav className="border-b-2 border-gray pt-8 pb-4 w-[1200px] mx-auto">
+    <nav className="bg-slate-50 py-4 px-4 mt-6 w-[1200px] mx-auto rounded-lg shadow-lg sticky top-6 z-10">
       <div className="flex flex-row items-center justify-between">
         <div className="flex items-center">
           <p className="font-bold text-xl">Med Shop.</p>

@@ -17,3 +17,7 @@ export { default as AddressCard } from "./Checkout/addressCard";
 export { default as CartCard } from "./Cart/mainCard";
 export { default as CartProductCard } from "./Cart/productCard";
 export { default as CartTotalPrice } from "./Cart/totalCard";
+export {default as AdminDashboard} from "./admin/dashboard";
+export {default as AddProduct} from "./admin/addProduct";
+export {default as ManageProduct} from "./admin/manageProduct";
+export {default as ProtectedRoute} from "./ProtectedRoute";

@@ -5,7 +5,6 @@ import { Navbar, Footer, MenuAccount, InputProfile } from "../components";
 import getUser from "@/hooks/getUser";
 
 const Account = () => {
-  const { user, loading, error } = getUser();
   return (
     <>
       <div>
@@ -14,10 +13,10 @@ const Account = () => {
           <div className="flex justify-between">
           </div>
           <div className="flex gap-8">
-            <aside className="flex-col w-2/6 mt-6 rounded-3xl shadow-lg bg-white p-4 min-h-screen[500px]">
+            <aside className="flex-col w-1/6 mt-6 rounded-3xl shadow-lg bg-white p-4 min-h-screen[500px]">
               <MenuAccount />
             </aside>
-            <aside className="w-4/6 mt-6">
+            <aside className="mt-6 w-5/6">
               <InputProfile />
             </aside>
           </div>

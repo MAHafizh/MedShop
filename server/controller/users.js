@@ -88,11 +88,14 @@ export const updateUser = async (req, res) => {
     phone,
   } = req.body;
 
+  
   const user = await Users.findOne({
     where: {
       uuid: req.params.uuid,
     },
   });
+  
+  console.log("req", req.body);
 
   if (newPassword || confPassword) {
     if (!currPassword)

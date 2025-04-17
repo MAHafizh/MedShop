@@ -21,9 +21,9 @@ const store = new sessionStore({
 try {
     await db.authenticate();
     console.log("Database Connected...");
-    await Users.sync();
-    await Products.sync();
-    await Addresses.sync();
+    // await Users.sync();
+    // await Products.sync();
+    // await Addresses.sync();
   } catch (error) {
     console.error(error);
   }

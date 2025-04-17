@@ -9,9 +9,10 @@ interface User {
   date_of_birth: string;
   image: string;
   image_link: string;
+  role: string;
 }
 
-const getUser = () => {
+const useGetUser = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -24,7 +25,7 @@ const getUser = () => {
         });
         setUser(response.data);
       } catch (error) {
-        setError("Failed to fetch user data");
+        setError(error as string);
       } finally {
         setLoading(false);
       }
@@ -34,4 +35,4 @@ const getUser = () => {
   return { user, loading, error };
 };
 
-export default getUser;
+export default useGetUser;

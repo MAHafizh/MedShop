@@ -69,20 +69,6 @@ const Footer = () => {
             <h2 className="text-lg font-bold">Download App</h2>
             <p className="mt-2">Save $3 with App New User Only.</p>
             <div className="flex space-x-4 mt-4">
-              <Image
-                src=""
-                alt="Google Play"
-                width={120}
-                height={40}
-                className="object-contain"
-              />
-              <Image
-                src=""
-                alt="App Store"
-                width={120}
-                height={40}
-                className="object-contain"
-              />
             </div>
           </div>
         </div>

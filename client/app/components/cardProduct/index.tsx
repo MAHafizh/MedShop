@@ -29,13 +29,13 @@ const CardProduct = ({
   return (
     <>
       <div
-        className="w-64 h-58 max-w-sm bg-white border-gray-200 rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700"
+        className="w-60 h-60 max-w-sm bg-white border-gray-200 rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700"
         onClick={handleClick}
       >
-        <div className="flex justify-center m-6">
+        <div className="flex justify-center m-2">
           <img src={image_link} alt={image} className="w-auto h-36 object-cover" />
         </div>
-        <div className="flex flex-col px-5 h-28">
+        <div className="flex flex-col px-5 h-22">
           <a href="#">
             <h5 className="line-clamp-2 text-md font-semibold tracking-tight text-gray-900 dark:text-white">
               {name}

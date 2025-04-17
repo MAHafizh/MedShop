@@ -60,6 +60,9 @@ export const postProduct = async (req, res) => {
     ProductImage = "default-image.png";
   }
 
+  console.log("reqbody", req.body);
+  console.log("reqfile", req.file);
+
   try {
     await Products.create({
       name: name,
@@ -75,17 +78,41 @@ export const postProduct = async (req, res) => {
 };
 
 export const updateProduct = async (req, res) => {
-  const { name, price, category, description } = req.body;
   const product = await Products.findOne({
     where: {
       uuid: req.params.uuid,
     },
   });
   if (!product) return res.status(404).json({ msg: "Product Not Found" });
+
+  const { name, price, category, description } = req.body;
+  const image = req.file;
+  let ProductImage;
+  if (image) {
+    ProductImage = image.filename;
+  } else {
+    ProductImage = product.image;
+  }
+
+  if (image && product.image !== "default-image.png") {
+    const imagePath = path.join(
+      __dirname,
+      "../public/images/product",
+      product.image
+    );
+    fs.unlink(imagePath, (error) => {
+      if (error) {
+        console.error("Error deleting image:", error);
+      } else {
+        console.log("Image deleted successfully");
+      }
+    });
+  }
+
   try {
     await Products.update(
       {
-        image: product.image,
+        image: ProductImage,
         name: name,
         price: price,
         category: category,

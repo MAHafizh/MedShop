@@ -13,6 +13,10 @@ import { uploadImageUser } from "../middleware/multer.js";
 
 const router = express.Router();
 
+router.get("/", (req, res) => {
+  res.send("API is running");
+});
+
 router.get("/users", VerifyUser, AdminOnly, getUser);
 router.post("/users",uploadImageUser, postUser);
 router.get("/users/:uuid", VerifyUser, getUserById);

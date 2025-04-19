@@ -12,11 +12,9 @@ const storageUser = multer.diskStorage({
   },
   filename: function (req, file, cb) {
     const fileName =
-      path.parse(file.originalname).name +
-      "" +
+      path.parse(file.originalname).name.replace(/\s+/g, "") +
       Date.now() +
       path.extname(file.originalname);
-
     cb(null, fileName);
   },
 });
@@ -28,11 +26,9 @@ const storageProduct = multer.diskStorage({
   },
   filename: function (req, file, cb) {
     const fileName =
-      path.parse(file.originalname).name +
-      "" +
+      path.parse(file.originalname).name.replace(/\s+/g, "") +
       Date.now() +
       path.extname(file.originalname);
-
     cb(null, fileName);
   },
 });

@@ -1,12 +1,37 @@
 "use client";
 import React, { useState } from "react";
-import {
-  Modal,
-  Card,
-} from "flowbite-react";
+import { Modal, Button, Label, TextInput } from "flowbite-react";
 
-const AddressCard = () => {
+type Address = {
+  name: string;
+  phone: string;
+  address: string;
+};
+
+type AddressProps = {
+  onAddressChange: (Address: Address) => void;
+};
+
+const AddressCard = ({ onAddressChange }: AddressProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [form, setForm] = useState<Address>({
+    name: "",
+    phone: "",
+    address: "",
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setForm({
+      ...form,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = () => {
+    onAddressChange(form);
+    closeModal();
+  };
 
   const handleClick = () => {
     setIsModalOpen(true);
@@ -24,42 +49,58 @@ const AddressCard = () => {
           onClick={handleClick}
           className="bg-slate-50 rounded-lg cursor-pointer p-2 hover:bg-slate-100"
         >
-          <h1>Hafizh</h1>
-          <h1>081234567890</h1>
-          <h1>Jl. Medokan Asri Barat VII J No. 22</h1>
+          <h1>{form.name}</h1>
+          <h1>{form.phone}</h1>
+          <h1>{form.address}</h1>
         </div>
       </div>
       {isModalOpen && (
         <Modal show={isModalOpen} size="lg" onClose={closeModal} popup>
           <Modal.Header />
-          <Modal.Body className="space-y-4">
-            <Card className="w-full h-30">
-              <div className="mr-32">
-                <h1 className="text-base font-semibold tracking-normal leading-none mb-4">
-                  Hafizh
-                </h1>
-                <p className="font-normal text-base leading-none mb-2">
-                  081234567890
-                </p>
-                <p className="font-normal text-base leading-none">
-                  Jl. Medokan Asri Barat VII
-                </p>
+          <Modal.Body className="">
+            <div>
+              <div className="mb-2 block">
+                <Label htmlFor="small">Receiver Name</Label>
               </div>
-            </Card>
-
-            <Card className="w-full h-30">
-              <div className="mr-32">
-                <h1 className="text-base font-semibold tracking-normal leading-none mb-4">
-                  Hafizh
-                </h1>
-                <p className="font-normal text-base leading-none mb-2">
-                  081234567890
-                </p>
-                <p className="font-normal text-base leading-none">
-                  Jl. Medokan Asri Barat VII
-                </p>
+              <TextInput
+                name="name"
+                value={form.name}
+                onChange={handleChange}
+                type="text"
+                sizing="sm"
+              />
+            </div>
+            <div>
+              <div className="mb-2 block">
+                <Label htmlFor="small">Receiver Phone</Label>
               </div>
-            </Card>
+              <TextInput
+                name="phone"
+                value={form.phone}
+                onChange={handleChange}
+                type="text"
+                sizing="sm"
+              />
+            </div>
+            <div>
+              <div className="mb-2 block">
+                <Label htmlFor="small">Receiver Address</Label>
+              </div>
+              <TextInput
+                name="address"
+                value={form.address}
+                onChange={handleChange}
+                type="text"
+                sizing="sm"
+              />
+            </div>
+            <Button
+              className="w-full mt-4"
+              color="success"
+              onClick={handleSubmit}
+            >
+              Save Address
+            </Button>
           </Modal.Body>
         </Modal>
       )}

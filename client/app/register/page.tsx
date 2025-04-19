@@ -118,7 +118,7 @@ const Register = () => {
               <input
                 type="password"
                 name="confPassword"
-                placeholder="Password Confirmation"
+                placeholder="Repeat Password"
                 value={formData.confPassword}
                 onChange={handleChange}
                 className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md text-sm placeholder-gray-400 focus:outline-none focus:border-gray-500

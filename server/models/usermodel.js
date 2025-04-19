@@ -5,16 +5,13 @@ dotenv.config();
 
 const { DataTypes } = Sequelize;
 
-const Users = db.define(
-  "users",
+const User = db.define(
+  "user",
   {
     uuid: {
       type: DataTypes.STRING,
       defaultValue: DataTypes.UUIDV4,
       allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
       primaryKey: true,
     },
     name: {
@@ -69,9 +66,9 @@ const Users = db.define(
       type: DataTypes.VIRTUAL,
       get() {
         console.log("Image value: ", this.getDataValue("image"));
-        return `${process.env.APP_API_BASE}/public/images/user/${this.getDataValue(
-          "image"
-        )}`;
+        return `${
+          process.env.APP_API_BASE
+        }/public/images/user/${this.getDataValue("image")}`;
       },
     },
   },
@@ -80,4 +77,4 @@ const Users = db.define(
   }
 );
 
-export default Users;
+export default User;

@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import React, { useEffect, useState } from "react";
-import { Navbar, Footer, MenuAccount, InputProfile } from "../components";
+import { Navbar, Footer, MenuAccount, InputProfile, ProtectedRoute } from "../components";
 import getUser from "@/hooks/getUser";
 
 const Account = () => {
   return (
-    <>
+    <ProtectedRoute>
       <div>
         <Navbar />
         <main className="min-h-screen flex flex-col w-[1200px] mx-auto">
@@ -23,7 +23,7 @@ const Account = () => {
         </main>
         <Footer />
       </div>
-    </>
+    </ProtectedRoute>
   );
 };
 

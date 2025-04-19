@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import React from "react";
 import { useRouter } from "next/navigation";
@@ -25,7 +26,7 @@ interface AdminDashboardProps {
   products: Iproducts[];
 }
 
-const AdminDashboard = ({ products }: AdminDashboardProps) => {
+const ManageOrder = ({ products }: AdminDashboardProps) => {
   const router = useRouter();
 
   const handleManage = (uuid: string) => {
@@ -34,7 +35,7 @@ const AdminDashboard = ({ products }: AdminDashboardProps) => {
 
   return (
     <div>
-      <Table hoverable className="">
+      <Table hoverable>
         <TableHead>
           <TableHeadCell className="">Product name</TableHeadCell>
           <TableHeadCell className="">Category</TableHeadCell>
@@ -44,8 +45,8 @@ const AdminDashboard = ({ products }: AdminDashboardProps) => {
             <span className="sr-only">Edit</span>
           </TableHeadCell>
         </TableHead>
-        <TableBody className="divide-y w-[1000px]">
-          {products.map((product) => (
+        <TableBody className="divide-y">
+          {/* {products.map((product) => (
             <TableRow
               key={product.uuid}
               className="bg-white dark:border-gray-700 dark:bg-gray-800"
@@ -62,10 +63,10 @@ const AdminDashboard = ({ products }: AdminDashboardProps) => {
                 </button>
               </TableCell>
             </TableRow>
-          ))}
+          ))} */}
         </TableBody>
       </Table>
     </div>
   );
 };
-export default AdminDashboard;
+export default ManageOrder;

@@ -1,9 +1,14 @@
-import React, { useEffect, useState, useRef } from "react";
+"use client"
+/* eslint-disable @next/next/no-img-element */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, {useState, useRef } from "react";
 import { Label, TextInput, Button, FileInput } from "flowbite-react";
 import axios from "axios";
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+import { useRouter } from "next/navigation";
 
-const AddProduct = () => {
+const AddProduct: React.FC = () => {
+  const router = useRouter();
   const [form, setForm] = useState({
     name: "",
     price: "",
@@ -63,6 +68,7 @@ const AddProduct = () => {
         },
         withCredentials: true,
       });
+      router.push("/account/admin");
       alert(response.data.msg);
     } catch (error) {
       console.error("Error adding product:", error);

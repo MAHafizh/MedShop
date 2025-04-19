@@ -60,7 +60,6 @@ const ModalAddress = ({ show, onClose, onSave }: ModalAddressProps) => {
   const [selectedSubdistrict, setSelectedSubdistrict] =
     useState<Subdistrict | null>(null);
 
-  // Fetch provinces on mount
   useEffect(() => {
     const fetchProvince = async () => {
       try {
@@ -77,7 +76,6 @@ const ModalAddress = ({ show, onClose, onSave }: ModalAddressProps) => {
     fetchProvince();
   }, []);
 
-  // Fetch cities when a province is selected
   useEffect(() => {
     if (selectedProvince) {
       const fetchCities = async () => {
@@ -95,7 +93,6 @@ const ModalAddress = ({ show, onClose, onSave }: ModalAddressProps) => {
     }
   }, [selectedProvince]);
 
-  // Fetch districts when a city is selected
   useEffect(() => {
     if (selectedCity) {
       const fetchDistricts = async () => {
@@ -113,7 +110,6 @@ const ModalAddress = ({ show, onClose, onSave }: ModalAddressProps) => {
     }
   }, [selectedCity]);
 
-  // Fetch subdistricts when a district is selected
   useEffect(() => {
     if (selectedDistrict) {
       const fetchSubDistricts = async () => {

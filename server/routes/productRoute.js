@@ -7,13 +7,14 @@ import {
   postProduct,
 } from "../controller/products.js";
 import { uploadImageProduct } from "../middleware/multer.js";
+import { VerifyUser } from "../middleware/authUser.js";
 
 const router = express.Router();
 
 router.get("/products", getProduct);
-router.post("/products", uploadImageProduct, postProduct);
 router.get("/products/:uuid", getProductById);
-router.patch("/products/:uuid", uploadImageProduct, updateProduct);
-router.delete("/products/:uuid", deleteProduct);
+router.post("/products", VerifyUser, uploadImageProduct, postProduct);
+router.patch("/products/:uuid", VerifyUser, uploadImageProduct, updateProduct);
+router.delete("/products/:uuid", VerifyUser, deleteProduct);
 
 export default router;

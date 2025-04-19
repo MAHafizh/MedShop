@@ -2,13 +2,14 @@ import Users from "../models/usermodel.js";
 import argon2 from "argon2";
 
 export const Login = async (req, res) => {
+  const { password, remember } = req.body;
   const user = await Users.findOne({
     where: {
       email: req.body.email,
     },
   });
   if (!user) return res.status(404).json({ msg: "User tidak ditemukan" });
-  const match = await argon2.verify(user.password, req.body.password);
+  const match = await argon2.verify(user.password, password);
   if (!match) return res.status(400).json({ msg: "Wrong password" });
   req.session.uuid = user.uuid;
   const uuid = user.uuid;
@@ -18,6 +19,11 @@ export const Login = async (req, res) => {
   const birthdate = user.date_of_birth;
   const image = user.image;
   const image_link = user.image_link;
+  if (remember === "on") {
+    req.session.cookie.maxAge = 1000 * 60 * 60 * 24 * 7;
+  } else {
+    req.session.cookie.expires = false;
+  }
   req.session.save(() => {
     res
       .status(200)

@@ -1,12 +1,7 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import axios from "axios";
 import useGetUser from "@/hooks/getUser";
-
-interface ProtectedRouteProps {
-  children: React.ReactNode;
-}
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
@@ -15,7 +10,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const protectRoute = async () => {
-      if (!pathname.startsWith("/account/admin")) {
+      if (!pathname.startsWith("/account")) {
         return;
       }
       if (loading) return;

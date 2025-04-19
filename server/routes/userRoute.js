@@ -6,9 +6,7 @@ import {
   updateUser,
   deleteUser,
 } from "../controller/users.js";
-
 import { VerifyUser, AdminOnly } from "../middleware/authUser.js";
-
 import { uploadImageUser } from "../middleware/multer.js";
 
 const router = express.Router();
@@ -22,6 +20,6 @@ router.post("/users",uploadImageUser, postUser);
 router.get("/users/:uuid", VerifyUser, getUserById);
 // router.patch("/users/:uuid", VerifyUser, uploadImageUser, updateUser);
 router.patch("/users/:uuid", VerifyUser, updateUser);
-router.delete("/users/:uuid", VerifyUser, deleteUser);
+router.delete("/users", VerifyUser, deleteUser);
 
 export default router;

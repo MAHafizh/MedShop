@@ -137,7 +137,7 @@ export const updateUser = async (req, res) => {
 export const deleteUser = async (req, res) => {
   const user = await Users.findOne({
     where: {
-      uuid: req.params.uuid,
+      uuid: req.session.uuid,
     },
   });
   if (!user) return res.status(404).json({ msg: "User tidak ditemukan" });

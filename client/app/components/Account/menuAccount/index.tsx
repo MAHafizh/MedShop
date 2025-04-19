@@ -47,6 +47,20 @@ const MenuAccount = () => {
             </Button>
           </>
         )}
+        <Button
+          color="dark"
+          onClick={() => router.push("/account/order")}
+          className="w-full h-10"
+        >
+          Your Order
+        </Button>
+        <Button
+          color="dark"
+          onClick={() => router.push("/account/address")}
+          className="w-full h-10"
+        >
+          Your Address
+        </Button>
       </div>
       <div className="mt-auto gap-2 w-full flex flex-col justify-center items-center">
         {user?.role === "admin" && (

@@ -1,3 +1,4 @@
+"use client"
 import React, { useState } from "react";
 import { Button, Label, Select } from "flowbite-react";
 import axios from "axios";

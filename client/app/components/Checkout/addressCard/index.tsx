@@ -10,7 +10,7 @@ type Address = {
 };
 
 const AddressCard = () => {
-  const { user, loading, error } = getUser();
+  const { user } = getUser();
   console.log(user);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [form, setForm] = useState<Address>({
@@ -18,6 +18,7 @@ const AddressCard = () => {
   });
 
   useEffect(() => {
+    if(!user) return
     if (user?.address) {
       setForm({
         address: user.address,
@@ -37,7 +38,7 @@ const AddressCard = () => {
 
   const handleSubmit = async () => {
     try {
-      const res = await axios.patch(
+      await axios.patch(
         `${baseUrl}/users/${user?.uuid}`,
         {
           address: form.address,
@@ -46,7 +47,9 @@ const AddressCard = () => {
           withCredentials: true,
         }
       );
-    } catch (error) {}
+    } catch (error) {
+      console.error(error)
+    }
     closeModal();
   };
 
@@ -85,6 +88,7 @@ const AddressCard = () => {
                 onChange={handleChange}
                 type="text"
                 sizing="sm"
+                disabled
               />
             </div>
             <div>
@@ -97,6 +101,7 @@ const AddressCard = () => {
                 onChange={handleChange}
                 type="text"
                 sizing="sm"
+                disabled
               />
             </div>
             <div>

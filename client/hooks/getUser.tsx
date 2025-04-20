@@ -10,6 +10,7 @@ interface User {
   image: string;
   image_link: string;
   role: string;
+  address: string;
 }
 
 const useGetUser = () => {

@@ -68,41 +68,19 @@ const DetailProduct: React.FC<IProps> = ({ uuid }) => {
           <div className="mb-4">
             <h1 className="font-bold text-xl">{product.name}</h1>
             <div className="inline-flex items-center my-2 space-x-2"></div>
-            <h1 className="ml-4 font-bold text-xl">$ {product.price}</h1>
+            <h1 className="ml-4 font-bold text-xl">Rp {product.price}</h1>
           </div>
           <div className="ml-4">{product.description}</div>
           <div className="ml-4 my-4 flex gap-4 items-center">
             <QuantitySelector qty={qty} setQty={setQty} />
             <div>
-              <h1 className="font-bold text-xl">$ {totalPrice}</h1>
+              <h1 className="font-bold text-xl">Rp {totalPrice}</h1>
             </div>
           </div>
           <div className="flex gap-4 ml-4">
             <button onClick={handleToCart} className="text-white rounded-md w-36 h-10 py-2  bg-red-500 hover:bg-red-600">
               Add to Cart
             </button>
-          </div>
-          <div className="mt-6">
-            <div tabIndex={0} className="collapse bg-base-200">
-              <div className="collapse-title text-lg font-normal">
-                Spesification
-              </div>
-              <div className="collapse-content">
-                <p>
-                  tabindex={0} attribute is necessary to make the div focusable
-                </p>
-              </div>
-            </div>
-            <div tabIndex={0} className="collapse bg-base-200">
-              <div className="collapse-title text-lg font-normal">
-                Shipping Information
-              </div>
-              <div className="collapse-content">
-                <p>
-                  tabindex={0} attribute is necessary to make the div focusable
-                </p>
-              </div>
-            </div>
           </div>
         </div>
       </div>

@@ -13,7 +13,7 @@ import Users from "./models/usermodel.js";
 import Products from "./models/productmodel.js";
 import Cart from "./models/cartmodel.js";
 import { Order, OrderItem } from "./models/ordermodel.js";
-import Address from "./models/addressmodel.js";
+// import Address from "./models/addressmodel.js";
 
 dotenv.config();
 const app = express();
@@ -26,11 +26,10 @@ try {
   await db.authenticate();
   console.log("Database Connected");
   await Users.sync();
+  await Order.sync();
   await Products.sync();
-  await Order.sync()
-  await OrderItem.sync()
-  await Cart.sync()
-  await Address.sync()
+  await OrderItem.sync();
+  await Cart.sync();
 } catch (error) {
   console.error(error);
 }

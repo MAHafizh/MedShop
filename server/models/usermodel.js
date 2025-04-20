@@ -58,6 +58,10 @@ const User = db.define(
         notEmpty: true,
       },
     },
+    address: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
     image: {
       type: DataTypes.STRING,
       allowNull: false,

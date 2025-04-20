@@ -3,12 +3,29 @@ import path from "path";
 import fs from "fs";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
+import { Op, Sequelize } from "sequelize";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 export const getProduct = async (req, res) => {
+  const search = req.query.search || "";
   try {
+    if (!search) {
+      const response = await Products.findAll({
+        attributes: [
+          "uuid",
+          "name",
+          "price",
+          "category",
+          "description",
+          "image",
+          "image_link",
+        ],
+      });
+      return res.status(200).json(response);
+    }
+
     const response = await Products.findAll({
       attributes: [
         "uuid",
@@ -19,12 +36,29 @@ export const getProduct = async (req, res) => {
         "image",
         "image_link",
       ],
+      where: {
+        [Op.or]: [
+          {
+            name: {
+              [Op.like]: Sequelize.fn("LOWER", Sequelize.col("name")),
+              [Op.like]: `%${search.toLowerCase()}%`,
+            },
+          },
+          {
+            category: {
+              [Op.like]: Sequelize.fn("LOWER", Sequelize.col("category")),
+              [Op.like]: `%${search.toLowerCase()}%`,
+            },
+          },
+        ],
+      },
     });
     res.status(200).json(response);
   } catch (error) {
     res.status(500).json({ msg: error.message });
   }
 };
+
 export const getProductById = async (req, res) => {
   try {
     const response = await Products.findOne({

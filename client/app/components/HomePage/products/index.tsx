@@ -1,6 +1,8 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import CardProduct from "../../cardProduct";
-const URL = process.env.BASE_URL || "http://localhost:5000/products";
+import axios from "axios";
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 interface Iproducts {
   uuid: number;
@@ -10,11 +12,26 @@ interface Iproducts {
   image_link: string;
 }
 
-const Products = async () => {
-  const response = await fetch(URL, {
-    cache: "no-store",
-  });
-  const items: Iproducts[] = await response.json();
+type productProp = {
+  search: string;
+};
+
+const Products = ({ search }: productProp) => {
+  const [items, setItems] = useState<Iproducts[]>([]);
+  console.log(items);
+  useEffect(() => {
+    const getProduct = async () => {
+      try {
+        const response = await axios.get(
+          `${baseUrl}/products?search=${search}`
+        );
+        setItems(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getProduct();
+  }, [search]);
   return (
     <>
       <div className="flex items-center space-x-4">
@@ -25,7 +42,9 @@ const Products = async () => {
       </div>
       <div className="mt-4 mb-4 flex justify-center">
         <div className="gap-6 flex flex-wrap justify-center items-center">
-          {items.length > 0 ? (
+          {items.length === 0 ? (
+            <p>No Items</p>
+          ) : (
             items.map((item) => (
               <CardProduct
                 key={item.uuid}
@@ -36,8 +55,6 @@ const Products = async () => {
                 image_link={item.image_link}
               />
             ))
-          ) : (
-            <p>No Product Available</p>
           )}
         </div>
       </div>

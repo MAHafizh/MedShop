@@ -2,7 +2,6 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import React from "react";
-import Rating from "../Rating/rating";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
@@ -47,7 +46,7 @@ const CardProduct = ({
             </div>
             <div className="flex items-center justify-between">
               <span className="text-md font-bold text-gray-900 dark:text-white">
-                ${price}
+                Rp {price}
               </span>
             </div>
           </div>

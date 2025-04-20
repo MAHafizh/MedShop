@@ -67,7 +67,11 @@ OrderItem.belongsTo(User);
 Product.hasMany(OrderItem);
 OrderItem.belongsTo(Product);
 
-Order.hasMany(OrderItem);
+Order.hasMany(OrderItem, {
+  onDelete: "CASCADE",
+  hooks: true
+});
+
 OrderItem.belongsTo(Order);
 
 export { Order, OrderItem };

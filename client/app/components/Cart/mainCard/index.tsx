@@ -57,6 +57,7 @@ const CartCard = ({ content, onQtyChange, onDelete }: CartCardProps) => {
   };
 
   const handleDec = () => {
+    if(quantity <= 1) return;
     const newQty = quantity - 1;
     updateQty(newQty);
   };

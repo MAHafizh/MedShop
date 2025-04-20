@@ -70,6 +70,7 @@ export const createOrder = async (req, res) => {
       address: address,
       status: orderStatus,
       total: total,
+      isShipped: false
     });
 
     await OrderItem.update(
@@ -100,6 +101,7 @@ export const getOrder = async (req, res) => {
             },
           ],
         },
+        { model: User, attributes: ["name", "phone"] },
       ],
     });
     res.status(200).json(order);
@@ -130,15 +132,43 @@ export const getOrderById = async (req, res) => {
   }
 };
 
-export const updateCart = async (req, res) => {};
+export const setShippingOrderStatus = async (req, res) => {
+  const { uuid } = req.params;
+  console.log(uuid)
+  try {
+    const order = await Order.findOne({
+      where: { uuid },
+    });
+    order.isShipped = true;
+    await order.save()
+    res.status(200).json({msg: "Order Shipped"})
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const deleteOrder = async (req, res) => {
+  const { uuid } = req.params;
+  try {
+    const order = await Order.findOne({
+      where: { uuid },
+    });
+    order.status = "Shipping";
+    await order.save()
+    res.status(200).json({msg: "Order Shipped"})
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 export const deleteCart = async (req, res) => {};
 
 export const createInvoice = async (req, res) => {
-  const { orderUuid } = req.params.uuid;
+  const { uuid } = req.params;
+  console.log("orderUuid", uuid);
   try {
     const order = await Order.findOne({
-      where: orderUuid,
+      where: { uuid },
       include: [
         {
           model: OrderItem,
@@ -173,7 +203,7 @@ export const createInvoice = async (req, res) => {
     const fullpath = pathfile + "/" + filename;
     const html = fs.readFileSync("./assets/templates/template.html", "utf-8");
     const option = {
-      format: "A3",
+      format: "A4",
       orientation: "portrait",
       border: "10mm",
     };
@@ -185,11 +215,13 @@ export const createInvoice = async (req, res) => {
       type: "buffer",
     };
     const buffer = await pdf.create(document, option);
-    res.set({
-      "Content-Type": "application/pdf",
-      "Content-Disposition": `attachment; filename="invoice-${order.uuid}.pdf"`,
-    });
-    res.send(buffer).status(200).json(order);
+    res
+      .status(200)
+      .set({
+        "Content-Type": "application/pdf",
+        "Content-Disposition": `attachment; filename="invoice-${order.uuid}.pdf"`,
+      })
+      .send(buffer);
   } catch (error) {
     console.error(error);
   }

@@ -41,7 +41,13 @@ const Order = () => {
       if (!response.data) return console.error("failed to create invoice");
       const blob = new Blob([response.data], { type: "application/pdf" });
       const url = window.URL.createObjectURL(blob);
-      window.open(url)
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `invoice-${uuid}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
     } catch (error) {
       console.error(error)
     }

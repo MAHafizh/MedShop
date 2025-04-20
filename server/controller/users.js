@@ -13,7 +13,15 @@ const __dirname = dirname(__filename);
 export const getUser = async (req, res) => {
   try {
     const response = await Users.findAll({
-      attributes: ["uuid", "name", "email", "role", "image", "image_link"],
+      attributes: [
+        "uuid",
+        "name",
+        "email",
+        "role",
+        "image",
+        "image_link",
+        "phone",
+      ],
     });
     res.status(200).json(response);
   } catch (error) {
@@ -24,7 +32,15 @@ export const getUser = async (req, res) => {
 export const getUserById = async (req, res) => {
   try {
     const response = await Users.findOne({
-      attributes: ["uuid", "name", "email", "role", "image", "image_link"],
+      attributes: [
+        "uuid",
+        "name",
+        "email",
+        "role",
+        "image",
+        "image_link",
+        "phone",
+      ],
       where: {
         uuid: req.params.uuid,
       },
@@ -78,6 +94,12 @@ export const postUser = async (req, res) => {
 };
 
 export const updateUser = async (req, res) => {
+  const user = await Users.findOne({
+    where: {
+      uuid: req.params.uuid,
+    },
+  });
+
   const {
     name,
     email,
@@ -88,14 +110,28 @@ export const updateUser = async (req, res) => {
     phone,
   } = req.body;
 
-  
-  const user = await Users.findOne({
-    where: {
-      uuid: req.params.uuid,
-    },
-  });
-  
-  console.log("req", req.body);
+  const image = req.file;
+  let UserImage;
+  if (image) {
+    UserImage = image.filename;
+  } else {
+    UserImage = user.image;
+  }
+
+  if (image && user.image !== "default-image.jpg") {
+    const imagePath = path.join(
+      __dirname,
+      "../public/images/user",
+      user.image
+    );
+    fs.unlink(imagePath, (error) => {
+      if (error) {
+        console.error("Error deleting image:", error);
+      } else {
+        console.log("Image deleted successfully");
+      }
+    });
+  }
 
   if (newPassword || confPassword) {
     if (!currPassword)
@@ -115,7 +151,7 @@ export const updateUser = async (req, res) => {
   try {
     await Users.update(
       {
-        image: user.image,
+        image: UserImage,
         name: name,
         email: email,
         password: password,

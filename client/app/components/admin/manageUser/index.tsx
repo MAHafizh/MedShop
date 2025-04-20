@@ -1,24 +1,42 @@
-"use client";
+"use client"
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState, useRef } from "react";
-import { Label, TextInput, Button, FileInput, Select } from "flowbite-react";
+import React, { useEffect, useState, useRef } from "react";
+import { Label, TextInput, Button, FileInput } from "flowbite-react";
 import axios from "axios";
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 import { useRouter } from "next/navigation";
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
-const AddProduct: React.FC = () => {
+const ManageUser = ({ uuid }: { uuid: string }) => {
   const router = useRouter();
+  const fileRef = useRef(null);
   const [form, setForm] = useState({
     name: "",
-    price: "",
-    category: "Alat",
-    description: "",
-    productImage: null as string | null,
-    productFile: null,
+    email: "",
+    phone: "",
+    role: "",
+    userImage: null as string | null,
+    userFile: null,
   });
 
-  const fileRef = useRef(null);
+  useEffect(() => {
+    if (uuid) {
+      const fetchData = async () => {
+        const response = await axios.get(`${baseUrl}/users/${uuid}`, {
+          withCredentials: true,
+        });
+        setForm({
+          name: response.data.name,
+          email: response.data.email,
+          phone: response.data.phone,
+          role: response.data.role,
+          userImage: response.data.image_link,
+          userFile: null,
+        });
+      };
+      fetchData();
+    }
+  }, [uuid]);
 
   const handleChange = (e: any) => {
     const { id, value } = e.target;
@@ -34,12 +52,11 @@ const AddProduct: React.FC = () => {
       const reader = new FileReader();
       reader.onload = (event) => {
         const imageUrl = event.target?.result;
-        console.log(imageUrl);
-        setForm({
-          ...form,
-          productFile: file,
-          productImage: imageUrl as string | null,
-        });
+          setForm({
+            ...form,
+            userFile: file,
+            userImage: imageUrl as string | null,
+          });
       };
       reader.readAsDataURL(file);
     }
@@ -50,36 +67,50 @@ const AddProduct: React.FC = () => {
 
     const formData = new FormData();
     formData.append("name", form.name);
-    formData.append("price", form.price);
-    formData.append("category", form.category);
-    formData.append("description", form.description);
-    if (form.productFile) {
-      formData.append("ProductImage", form.productFile);
+    formData.append("email", form.email);
+    formData.append("phone", form.phone);
+    formData.append("role", form.role);
+    if (form.userFile) {
+      formData.append("UserImage", form.userFile);
     }
 
     Array.from(formData.entries()).forEach(([key, value]) => {
       console.log(`${key}:`, value);
     });
 
-    // try {
-    //   const response = await axios.post(`${baseUrl}/products`, formData, {
-    //     headers: {
-    //       "Content-Type": "multipart/form-data",
-    //     },
-    //     withCredentials: true,
-    //   });
-    //   router.push("/account/admin");
-    //   alert(response.data.msg);
-    // } catch (error) {
-    //   console.error("Error adding product:", error);
-    // }
+    try {
+      const response = await axios.patch(`${baseUrl}/users/${uuid}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        withCredentials: true,
+      });
+      alert(response.data.msg);
+      router.push("/account/admin/user");
+    } catch (error) {
+      console.error("Error adding product:", error);
+    }
+  };
+
+  const handleHapus = async (e: any) => {
+    alert("Apakah anda yakin ingin menghapus produk ini?");
+    e.preventDefault();
+    try {
+      const response = await axios.delete(`${baseUrl}/products/${uuid}`, {
+        withCredentials: true,
+      });
+      alert(response.data.msg);
+      router.push("/account/admin");
+    } catch (error) {
+      console.error("Error deleting product:", error);
+    }
   };
 
   return (
     <>
       <div>
         <div className="mt-4">
-          <h1>Add New Product</h1>
+          <h1>Manage Product</h1>
           <div className="flex flex-col justify-between mt-4 mb-4">
             <div className="w-full">
               <div className="mb-2 block">
@@ -87,7 +118,7 @@ const AddProduct: React.FC = () => {
                 <div className="w-32 h-32 my-2">
                   <img
                     className="w-full h-full object-contain"
-                    src={form.productImage || undefined}
+                    src={form.userImage || undefined}
                     alt=""
                   />
                 </div>
@@ -117,42 +148,42 @@ const AddProduct: React.FC = () => {
             <div>
               <div className="w-full">
                 <div className="mb-2 block">
-                  <Label htmlFor="price" value="Price" />
+                  <Label htmlFor="email" value="Email" />
                 </div>
                 <TextInput
-                  value={form.price}
+                  value={form.email}
                   onChange={handleChange}
-                  id="price"
+                  id="email"
                   type="text"
                   className="w-full"
                 />
               </div>
             </div>
 
-            <div className="w-full">
-              <div className="mb-2 block">
-                <Label htmlFor="category">Select Category</Label>
+            <div>
+              <div className="w-full">
+                <div className="mb-2 block">
+                  <Label htmlFor="phone" value="Phone" />
+                </div>
+                <TextInput
+                  value={form.phone}
+                  onChange={handleChange}
+                  id="phone"
+                  type="text"
+                  className="w-full"
+                />
               </div>
-              <Select
-                id="category"
-                value={form.category}
-                onChange={handleChange}
-                required
-              >
-                <option value="Alat">Alat</option>
-                <option value="Obat">Obat</option>
-              </Select>
             </div>
 
             <div>
               <div className="w-full">
                 <div className="mb-2 block">
-                  <Label htmlFor="description" value="Description" />
+                  <Label htmlFor="role" value="Role" />
                 </div>
                 <TextInput
-                  value={form.description}
+                  value={form.role}
                   onChange={handleChange}
-                  id="description"
+                  id="role"
                   type="text"
                   className="w-full"
                 />
@@ -164,9 +195,12 @@ const AddProduct: React.FC = () => {
           <Button onClick={handleSimpan} color="success" className="mt-4 w-25">
             Simpan
           </Button>
+          <Button onClick={handleHapus} color="failure" className="mt-4 w-25">
+            Hapus
+          </Button>
         </div>
       </div>
     </>
   );
 };
-export default AddProduct;
+export default ManageUser;

@@ -13,6 +13,7 @@ import Users from "./models/usermodel.js";
 import Products from "./models/productmodel.js";
 import Cart from "./models/cartmodel.js";
 import { Order, OrderItem } from "./models/ordermodel.js";
+import Address from "./models/addressmodel.js";
 
 dotenv.config();
 const app = express();
@@ -29,6 +30,7 @@ try {
   await Order.sync()
   await OrderItem.sync()
   await Cart.sync()
+  await Address.sync()
 } catch (error) {
   console.error(error);
 }

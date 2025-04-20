@@ -20,7 +20,6 @@ type CartItem = {
 
 const Cart = () => {
   const [carts, setCarts] = useState<CartItem[]>([]);
-  console.log(carts)
   const [totalPrice, setTotalPrice] = useState(0);
 
   useEffect(() => {
@@ -75,14 +74,18 @@ const Cart = () => {
         </div>
         <div className="flex">
           <aside className="w-2/3 space-y-4">
-            {carts.map((cart: any) => (
-              <CartCard
-                key={cart.uuid}
-                content={cart}
-                onQtyChange={handleQtyChange}
-                onDelete={() => handleDeleteCart(cart.uuid)}
-              />
-            ))}
+            {carts.length === 0 ? (
+              <p>Your Cart Is Empty</p>
+            ) : (
+              carts.map((cart: any) => (
+                <CartCard
+                  key={cart.uuid}
+                  content={cart}
+                  onQtyChange={handleQtyChange}
+                  onDelete={() => handleDeleteCart(cart.uuid)}
+                />
+              ))
+            )}
           </aside>
           <aside className="w-1/3">
             <CartTotalPrice total={totalPrice} content={carts} />

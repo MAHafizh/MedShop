@@ -3,7 +3,7 @@ import { Navbar, Footer, MenuAccount, InputAddress, ProtectedRoute, InputProfile
 
 const Address = () => {
   return (
-      <div>
+      <ProtectedRoute>
         <Navbar />
         <main className="min-h-screen flex flex-col w-[1200px] mx-auto">
           <div className="flex justify-between"></div>
@@ -17,7 +17,7 @@ const Address = () => {
           </div>
         </main>
         <Footer />
-      </div>
+      </ProtectedRoute>
   );
 };
 

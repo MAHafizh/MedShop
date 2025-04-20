@@ -20,12 +20,17 @@ type CartItem = {
 type CartTotalProps = {
   total: number;
   content: CartItem[];
+  cartLength: number;
 };
 
-const TotalCard = ({ total, content }: CartTotalProps) => {
+const TotalCard = ({ total, content, cartLength }: CartTotalProps) => {
   const router = useRouter();
 
   const handleOrder = async () => {
+    if (cartLength === 0) {
+      alert("Tidak Dapat Checkout");
+      return;
+    }
     try {
       console.log(content);
       await axios.post(

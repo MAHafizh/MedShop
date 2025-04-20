@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useState } from "react";
 import { Button, Label, Select } from "flowbite-react";
 import axios from "axios";
@@ -14,24 +14,34 @@ type Address = {
 type CartTotalProps = {
   total: number;
   address: Address;
+  orderLength: number;
 };
 
-const OrderCard = ({ total, address }: CartTotalProps) => {
+const OrderCard = ({ total, address, orderLength }: CartTotalProps) => {
+  const router = useRouter();
   const [payment, setPayment] = useState<string>("Cash On Delivery");
-  console.log(payment);
-  console.log(address.address)
+
   const handlePlaceOrder = async () => {
+    if (orderLength === 0) {
+      alert("Tidak Dapat Melakukan Order");
+      return;
+    }
     try {
-      await axios.post(
+      const response = await axios.post(
         `${baseUrl}/order`,
         {
           method: payment,
           address: address.address,
-          total: total
+          total: total,
         },
         { withCredentials: true }
       );
-      alert("Order Created");
+      const { uuid } = response.data;
+      await axios.get(`${baseUrl}/order/invoice/${uuid}`, {
+        withCredentials: true,
+      });
+      alert("Invoice Sent To Your Email");
+      router.push("account/order");
     } catch (error) {
       console.error(error);
     }

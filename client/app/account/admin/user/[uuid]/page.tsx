@@ -6,6 +6,7 @@ import {
   Footer,
   MenuAccount,
   ManageUser,
+  ProtectedRoute,
 } from "../../../../components";
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 import axios from "axios";
@@ -14,7 +15,7 @@ import { useParams } from "next/navigation";
 const AdminProduct = () => {
   const { uuid } = useParams<{ uuid: string }>();
   return (
-    <>
+    <ProtectedRoute requiredRole="admin">
       <div>
         <Navbar />
         <main className="min-h-screen flex flex-col w-[1200px] mx-auto">
@@ -30,7 +31,7 @@ const AdminProduct = () => {
         </main>
         <Footer />
       </div>
-    </>
+    </ProtectedRoute>
   );
 };
 

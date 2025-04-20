@@ -39,22 +39,13 @@ const Order = () => {
         withCredentials: true,
       });
       if (!response.data) return console.error("failed to create invoice");
-      const blob = new Blob([response.data], { type: "application/pdf" });
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = `invoice-${uuid}.pdf`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
     } catch (error) {
       console.error(error)
     }
   };
 
   return (
-    <div>
+    <ProtectedRoute>
       <Navbar />
       <main className="min-h-screen flex flex-col w-[1200px] mx-auto">
         <div className="flex justify-between"></div>
@@ -137,7 +128,7 @@ const Order = () => {
         </div>
       </main>
       <Footer />
-    </div>
+    </ProtectedRoute>
   );
 };
 

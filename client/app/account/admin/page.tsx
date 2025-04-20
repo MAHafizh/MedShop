@@ -27,7 +27,7 @@ const Admin = () => {
     fetchProducts();
   }, []);
   return (
-    <ProtectedRoute>
+    <ProtectedRoute requiredRole="admin">
       <div>
         <Navbar />
         <main className="min-h-screen flex flex-col w-[1200px] mx-auto">

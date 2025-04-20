@@ -45,6 +45,13 @@ const MenuAccount = () => {
             >
               Manage Order
             </Button>
+            <Button
+              color="dark"
+              onClick={() => router.push("/account/admin/user")}
+              className="w-full h-10"
+            >
+              Manage User
+            </Button>
           </>
         )}
         <Button

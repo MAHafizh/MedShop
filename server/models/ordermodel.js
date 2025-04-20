@@ -25,6 +25,10 @@ const Order = db.define(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+    isShipped: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+    },
   },
   {
     freezeTableName: true,

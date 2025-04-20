@@ -18,8 +18,8 @@ router.get("/", (req, res) => {
 router.get("/users", VerifyUser, AdminOnly, getUser);
 router.post("/users",uploadImageUser, postUser);
 router.get("/users/:uuid", VerifyUser, getUserById);
-// router.patch("/users/:uuid", VerifyUser, uploadImageUser, updateUser);
-router.patch("/users/:uuid", VerifyUser, updateUser);
+router.patch("/users/:uuid", VerifyUser, uploadImageUser, updateUser);
+// router.patch("/users/:uuid", VerifyUser, updateUser);
 router.delete("/users", VerifyUser, deleteUser);
 
 export default router;

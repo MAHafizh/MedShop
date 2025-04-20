@@ -21,7 +21,8 @@ const InputProfile = () => {
     currPassword: "",
     newPassword: "",
     confPassword: "",
-    image_link: "",
+    userImage: null as string | null,
+    userFile: null,
   });
 
   useEffect(() => {
@@ -34,10 +35,10 @@ const InputProfile = () => {
         currPassword: "",
         newPassword: "",
         confPassword: "",
-        image_link: user.image_link,
+        userImage: user.image_link,
+        userFile: null,
       });
       setUuid(user.uuid);
-      console.log(user);
     }
   }, [user]);
 
@@ -53,6 +54,22 @@ const InputProfile = () => {
     }));
   };
 
+  const handleImageChange = (e: any) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const imageUrl = event.target?.result;
+        setForm({
+          ...form,
+          userFile: file,
+          userImage: imageUrl as string | null,
+        });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleSimpan = async (e: any) => {
     e.preventDefault();
 
@@ -66,9 +83,12 @@ const InputProfile = () => {
     formData.append("currPassword", form.currPassword);
     formData.append("newPassword", form.newPassword);
     formData.append("confPassword", form.confPassword);
+    if (form.userFile) {
+      formData.append("UserImage", form.userFile);
+    }
 
     setIsDisabled(true);
-    console.log(uuid)
+    console.log(uuid);
 
     Array.from(formData.entries()).forEach(([key, value]) => {
       console.log(`${key}:`, value);
@@ -77,7 +97,7 @@ const InputProfile = () => {
     try {
       const response = await axios.patch(`${baseUrl}/users/${uuid}`, formData, {
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "multipart/form-data",
         },
         withCredentials: true,
       });
@@ -93,27 +113,22 @@ const InputProfile = () => {
         <h1>Manage Profile</h1>
         <div className="w-1/4 flex flex-col items-center -ml-10 mt-4">
           <div className="relative w-32 h-32 rounded-full overflow-hidden border border-gray-300 mb-4">
-            <img src={form.image_link} />
+            <img src={form.userImage || undefined} />
           </div>
-          {/* <Label
+          <Label
             htmlFor="profilePic"
             className="cursor-pointer bg-blue-500 text-white py-2 px-4 rounded-md text-sm hover:bg-blue-600"
           >
             Change Photo
-          </Label> */}
-          {/* <input
+          </Label>
+          <input
             disabled={isDisabled}
             type="file"
             id="profilePic"
             className="hidden"
             accept="image/*"
-            onChange={(e) => {
-              const file = e.target.files?.[0];
-              if (file) {
-                console.log(file.name);
-              }
-            }}
-          /> */}
+            onChange={handleImageChange}
+          />
         </div>
         <div className="flex justify-between space-x-4 mt-4 mb-4">
           <div className="w-full">

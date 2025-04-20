@@ -45,7 +45,7 @@ const Order = () => {
   };
 
   return (
-    <div>
+    <ProtectedRoute requiredRole="admin">
       <Navbar />
       <main className="min-h-screen flex flex-col w-[1200px] mx-auto">
         <div className="flex justify-between"></div>
@@ -128,7 +128,7 @@ const Order = () => {
         </div>
       </main>
       <Footer />
-    </div>
+    </ProtectedRoute>
   );
 };
 

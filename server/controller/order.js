@@ -7,6 +7,7 @@ import pdf from "pdf-creator-node";
 import fs from "fs";
 import moment from "moment-timezone";
 import { type } from "os";
+import sendInvoiceByEmail from "../utils/sendEmail.js";
 
 export const createOrderItem = async (req, res) => {
   const { carts } = req.body;
@@ -70,7 +71,7 @@ export const createOrder = async (req, res) => {
       address: address,
       status: orderStatus,
       total: total,
-      isShipped: false
+      isShipped: false,
     });
 
     await OrderItem.update(
@@ -82,7 +83,7 @@ export const createOrder = async (req, res) => {
         },
       }
     );
-    res.status(200).json({ msg: "Order Created", orderUuid: order.uuid });
+    res.status(200).json({ msg: "Order Created", uuid: order.uuid });
   } catch (error) {
     console.error(error);
     res.status(500).json(error);
@@ -123,7 +124,7 @@ export const getOrderById = async (req, res) => {
             },
           ],
         },
-        { model: User, attributes: ["name", "phone"] },
+        { model: User, attributes: ["name", "phone", "email"] },
       ],
     });
     res.status(200).json(order);
@@ -134,14 +135,14 @@ export const getOrderById = async (req, res) => {
 
 export const setShippingOrderStatus = async (req, res) => {
   const { uuid } = req.params;
-  console.log(uuid)
+  console.log(uuid);
   try {
     const order = await Order.findOne({
       where: { uuid },
     });
     order.isShipped = true;
-    await order.save()
-    res.status(200).json({msg: "Order Shipped"})
+    await order.save();
+    res.status(200).json({ msg: "Order Shipped" });
   } catch (error) {
     console.error(error);
   }
@@ -154,8 +155,8 @@ export const deleteOrder = async (req, res) => {
       where: { uuid },
     });
     order.status = "Shipping";
-    await order.save()
-    res.status(200).json({msg: "Order Shipped"})
+    await order.save();
+    res.status(200).json({ msg: "Order Shipped" });
   } catch (error) {
     console.error(error);
   }
@@ -178,7 +179,7 @@ export const createInvoice = async (req, res) => {
             },
           ],
         },
-        { model: User, attributes: ["name", "phone"] },
+        { model: User, attributes: ["name", "phone", "email"] },
       ],
     });
     const data = {
@@ -215,13 +216,21 @@ export const createInvoice = async (req, res) => {
       type: "buffer",
     };
     const buffer = await pdf.create(document, option);
-    res
-      .status(200)
-      .set({
-        "Content-Type": "application/pdf",
-        "Content-Disposition": `attachment; filename="invoice-${order.uuid}.pdf"`,
-      })
-      .send(buffer);
+    fs.writeFileSync(fullpath, buffer);
+    // res
+    //   .status(200)
+    //   .set({
+    //     "Content-Type": "application/pdf",
+    //     "Content-Disposition": `attachment; filename="invoice-${order.uuid}.pdf"`,
+    //   })
+    //   .send(buffer);
+
+    await sendInvoiceByEmail(
+      order.user.email,
+      `Invoice Order ${order.uuid}`,
+      `Halo ${order.user.name}, berikut invoice pembelian Anda.`,
+      fullpath
+    );
   } catch (error) {
     console.error(error);
   }

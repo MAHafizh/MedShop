@@ -5,7 +5,8 @@ import Image from "next/image";
 
 import { Navbar, Footer, Products } from "./components";
 
-import banner from "./assets/Frame 560.png";
+import banner1 from "./assets/banned_alkes.jpg";
+import banner2 from "./assets/Frame 560.png";
 
 import { Carousel } from "flowbite-react";
 
@@ -19,16 +20,7 @@ const Home = () => {
             <Carousel indicators={false}>
               <div className="flex justify-center items-center">
                 <Image
-                  src={banner}
-                  alt="Banner Image"
-                  className="object-cover rounded-xl"
-                  width={900}
-                  height={400} 
-                />
-              </div>
-              <div className="flex justify-center items-center">
-                <Image
-                  src={banner} 
+                  src={banner1}
                   alt="Banner Image"
                   className="object-cover rounded-xl"
                   width={900}
@@ -37,7 +29,7 @@ const Home = () => {
               </div>
               <div className="flex justify-center items-center">
                 <Image
-                  src={banner}
+                  src={banner2}
                   alt="Banner Image"
                   className="object-cover rounded-xl"
                   width={900}

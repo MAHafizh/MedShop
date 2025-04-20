@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import React, { useState, useEffect } from "react";
-import { CartCard, CartTotalPrice, Footer, Navbar } from "../components";
+import { CartCard, CartTotalPrice, Footer, Navbar, ProtectedRoute } from "../components";
 import axios from "axios";
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -66,7 +66,7 @@ const Cart = () => {
   };
 
   return (
-    <>
+    <ProtectedRoute>
       <Navbar />
       <main className="min-h-screen w-[1200px] mx-auto mb-4">
         <div className="border-b-2 py-8">
@@ -75,7 +75,7 @@ const Cart = () => {
         <div className="flex">
           <aside className="w-2/3 space-y-4">
             {carts.length === 0 ? (
-              <p>Your Cart Is Empty</p>
+              <p className="text-center m-4" >No Items</p>
             ) : (
               carts.map((cart: any) => (
                 <CartCard
@@ -88,12 +88,12 @@ const Cart = () => {
             )}
           </aside>
           <aside className="w-1/3">
-            <CartTotalPrice total={totalPrice} content={carts} />
+            <CartTotalPrice total={totalPrice} content={carts} cartLength={carts.length}/>
           </aside>
         </div>
       </main>
       <Footer />
-    </>
+    </ProtectedRoute>
   );
 };
 

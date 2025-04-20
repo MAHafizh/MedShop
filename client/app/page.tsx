@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 
 import { Navbar, Footer, Products } from "./components";
@@ -11,10 +11,16 @@ import banner2 from "./assets/Frame 560.png";
 import { Carousel } from "flowbite-react";
 
 const Home = () => {
+  const [search, setSearch] = useState<string>("")
+
+  const handleSearchChange = (newSearch: string) => {
+    setSearch(newSearch)
+  }
+
   return (
     <>
       <div className="min-h-screen flex flex-col">
-        <Navbar />
+        <Navbar setSearch={handleSearchChange}/>
         <div className="flex flex-grow w-[1200px] h-[450px] mx-auto">
           <aside className="relative flex-grow h-96 mt-4">
             <Carousel indicators={false}>
@@ -41,7 +47,7 @@ const Home = () => {
         </div>
         <main className="flex w-[1200px] mx-auto">
           <div>
-            <Products />
+            <Products search={search}/>
           </div>
         </main>
         <Footer />

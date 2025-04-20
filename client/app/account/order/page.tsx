@@ -19,17 +19,19 @@ import { blob } from "stream/consumers";
 
 const Order = () => {
   const [orders, setOrders] = useState<any[]>([]);
+
+  const getOrder = async () => {
+    try {
+      const response = await axios.get(`${baseUrl}/order/me`, {
+        withCredentials: true,
+      });
+      setOrders(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
-    const getOrder = async () => {
-      try {
-        const response = await axios.get(`${baseUrl}/order/me`, {
-          withCredentials: true,
-        });
-        setOrders(response.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
     getOrder();
   }, []);
 
@@ -40,7 +42,19 @@ const Order = () => {
       });
       if (!response.data) return console.error("failed to create invoice");
     } catch (error) {
-      console.error(error)
+      console.error(error);
+    }
+  };
+
+  const handleDelete = async (uuid: string) => {
+    try {
+      const response = await axios.delete(`${baseUrl}/order/${uuid}`, {
+        withCredentials: true,
+      });
+      await getOrder();
+      alert(response.data.msg);
+    } catch (error) {
+      alert(error);
     }
   };
 
@@ -111,7 +125,12 @@ const Order = () => {
                     ))}
                     <div className="flex justify-end gap-2 p-2">
                       <ButtonGroup className="">
-                        <Button color="red">Delete</Button>
+                        <Button
+                          onClick={() => handleDelete(order.uuid)}
+                          color="red"
+                        >
+                          Delete
+                        </Button>
                         <Button
                           onClick={() => handleInvoice(order.uuid)}
                           color="green"

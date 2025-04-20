@@ -21,6 +21,7 @@ export const getUser = async (req, res) => {
         "image",
         "image_link",
         "phone",
+        "address"
       ],
     });
     res.status(200).json(response);
@@ -40,6 +41,7 @@ export const getUserById = async (req, res) => {
         "image",
         "image_link",
         "phone",
+        "address"
       ],
       where: {
         uuid: req.params.uuid,
@@ -108,6 +110,7 @@ export const updateUser = async (req, res) => {
     confPassword,
     birthdate,
     phone,
+    address
   } = req.body;
 
   const image = req.file;
@@ -157,6 +160,7 @@ export const updateUser = async (req, res) => {
         password: password,
         date_of_birth: birthdate,
         phone: phone,
+        address: address
       },
       {
         where: {

@@ -1,24 +1,31 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, Button, Label, TextInput } from "flowbite-react";
+import getUser from "@/hooks/getUser";
+import axios from "axios";
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 type Address = {
-  name: string;
-  phone: string;
   address: string;
 };
 
-type AddressProps = {
-  onAddressChange: (Address: Address) => void;
-};
-
-const AddressCard = ({ onAddressChange }: AddressProps) => {
+const AddressCard = () => {
+  const { user, loading, error } = getUser();
+  console.log(user);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [form, setForm] = useState<Address>({
-    name: "",
-    phone: "",
     address: "",
   });
+
+  useEffect(() => {
+    if (user?.address) {
+      setForm({
+        address: user.address,
+      });
+    } else {
+      setIsModalOpen(true);
+    }
+  }, [user]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -28,8 +35,18 @@ const AddressCard = ({ onAddressChange }: AddressProps) => {
     });
   };
 
-  const handleSubmit = () => {
-    onAddressChange(form);
+  const handleSubmit = async () => {
+    try {
+      const res = await axios.patch(
+        `${baseUrl}/users/${user?.uuid}`,
+        {
+          address: form.address,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+    } catch (error) {}
     closeModal();
   };
 
@@ -49,8 +66,8 @@ const AddressCard = ({ onAddressChange }: AddressProps) => {
           onClick={handleClick}
           className="bg-slate-50 rounded-lg cursor-pointer p-2 hover:bg-slate-100"
         >
-          <h1>{form.name}</h1>
-          <h1>{form.phone}</h1>
+          <h1>{user?.name}</h1>
+          <h1>{user?.phone}</h1>
           <h1>{form.address}</h1>
         </div>
       </div>
@@ -64,7 +81,7 @@ const AddressCard = ({ onAddressChange }: AddressProps) => {
               </div>
               <TextInput
                 name="name"
-                value={form.name}
+                value={user?.name}
                 onChange={handleChange}
                 type="text"
                 sizing="sm"
@@ -76,7 +93,7 @@ const AddressCard = ({ onAddressChange }: AddressProps) => {
               </div>
               <TextInput
                 name="phone"
-                value={form.phone}
+                value={user?.phone}
                 onChange={handleChange}
                 type="text"
                 sizing="sm"

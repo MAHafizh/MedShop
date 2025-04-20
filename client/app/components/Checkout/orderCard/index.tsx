@@ -4,20 +4,15 @@ import { Button, Label, Select } from "flowbite-react";
 import axios from "axios";
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 import { useRouter } from "next/navigation";
-
-type Address = {
-  name: string;
-  phone: string;
-  address: string;
-};
+import useGetUser from "@/hooks/getUser";
 
 type CartTotalProps = {
   total: number;
-  address: Address;
   orderLength: number;
 };
 
-const OrderCard = ({ total, address, orderLength }: CartTotalProps) => {
+const OrderCard = ({ total, orderLength }: CartTotalProps) => {
+  const {user, error, loading}= useGetUser()
   const router = useRouter();
   const [payment, setPayment] = useState<string>("Cash On Delivery");
 
@@ -31,17 +26,22 @@ const OrderCard = ({ total, address, orderLength }: CartTotalProps) => {
         `${baseUrl}/order`,
         {
           method: payment,
-          address: address.address,
           total: total,
+          address: user?.address
         },
         { withCredentials: true }
       );
+      router.push("/account/order");
       const { uuid } = response.data;
-      await axios.get(`${baseUrl}/order/invoice/${uuid}`, {
-        withCredentials: true,
-      });
-      alert("Invoice Sent To Your Email");
-      router.push("account/order");
+      await axios.post(
+        `${baseUrl}/order/invoice`,
+        {
+          uuid: uuid,
+        },
+        {
+          withCredentials: true,
+        }
+      );
     } catch (error) {
       console.error(error);
     }

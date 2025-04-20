@@ -21,6 +21,7 @@ type CartItem = {
 const Cart = () => {
   const [carts, setCarts] = useState<CartItem[]>([]);
   const [totalPrice, setTotalPrice] = useState(0);
+  console.log("total di parent", totalPrice)
 
   useEffect(() => {
     const getCart = async () => {
@@ -53,7 +54,7 @@ const Cart = () => {
     setCarts(cartUpdated);
 
     setTotalPrice(
-      cartUpdated.reduce((acc: any, item: any) => acc + item.product.price, 0)
+      cartUpdated.reduce((acc: any, item: any) => acc + item.subtotal, 0)
     );
   };
 
@@ -61,7 +62,7 @@ const Cart = () => {
     const cartUpdated = carts.filter((cart) => cart.uuid !== uuid);
     setCarts(cartUpdated);
     setTotalPrice(
-      cartUpdated.reduce((acc: any, item: any) => acc + item.product.price, 0)
+      cartUpdated.reduce((acc: any, item: any) => acc + item.subtotal, 0)
     );
   };
 

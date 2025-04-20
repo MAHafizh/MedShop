@@ -21,6 +21,7 @@ const InputProfile = () => {
     currPassword: "",
     newPassword: "",
     confPassword: "",
+    address: "",
     userImage: null as string | null,
     userFile: null,
   });
@@ -32,6 +33,7 @@ const InputProfile = () => {
         email: user.email,
         phone: user.phone,
         birthdate: user.date_of_birth,
+        address: user.address,
         currPassword: "",
         newPassword: "",
         confPassword: "",
@@ -80,6 +82,7 @@ const InputProfile = () => {
     formData.append("email", form.email);
     formData.append("phone", form.phone);
     formData.append("birthdate", form.birthdate);
+    formData.append("address", form.address);
     formData.append("currPassword", form.currPassword);
     formData.append("newPassword", form.newPassword);
     formData.append("confPassword", form.confPassword);
@@ -180,6 +183,21 @@ const InputProfile = () => {
               id="birthdate"
               type="date"
               value={form.birthdate}
+              onChange={handleChange}
+              className="w-full"
+              disabled={isDisabled}
+            />
+          </div>
+        </div>
+        <div className="flex justify-between space-x-4 mt-4 mb-4">
+          <div className="w-full">
+            <div className="mb-2 block">
+              <Label htmlFor="address" value="Address" />
+            </div>
+            <TextInput
+              id="address"
+              type="text"
+              value={form.address}
               onChange={handleChange}
               className="w-full"
               disabled={isDisabled}

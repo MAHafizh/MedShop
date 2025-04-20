@@ -22,11 +22,6 @@ type OrderItem = {
 const Cart = () => {
   const [orderitems, setOrderItems] = useState<OrderItem[]>([]);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [address, setAddress] = useState({
-    name: "",
-    phone: "",
-    address: "",
-  });
 
   useEffect(() => {
     const getOrderItems = async () => {
@@ -93,10 +88,9 @@ const Cart = () => {
 
           <aside className="w-1/3">
             <div className="space-y-4">
-              <AddressCard onAddressChange={setAddress} />
+              <AddressCard />
               <OrderCard
                 total={totalPrice}
-                address={address}
                 orderLength={orderitems.length}
               />
             </div>

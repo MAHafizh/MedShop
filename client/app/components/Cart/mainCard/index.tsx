@@ -42,6 +42,7 @@ const CartCard = ({ content, onQtyChange, onDelete }: CartCardProps) => {
           withCredentials: true,
         }
       );
+      console.log("total di child", newQty)
       setQuantity(newQty);
       onQtyChange(content.uuid, newQty);
     } catch (error) {

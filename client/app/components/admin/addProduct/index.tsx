@@ -60,19 +60,18 @@ const AddProduct: React.FC = () => {
     Array.from(formData.entries()).forEach(([key, value]) => {
       console.log(`${key}:`, value);
     });
-
-    // try {
-    //   const response = await axios.post(`${baseUrl}/products`, formData, {
-    //     headers: {
-    //       "Content-Type": "multipart/form-data",
-    //     },
-    //     withCredentials: true,
-    //   });
-    //   router.push("/account/admin");
-    //   alert(response.data.msg);
-    // } catch (error) {
-    //   console.error("Error adding product:", error);
-    // }
+    try {
+      const response = await axios.post(`${baseUrl}/products`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        withCredentials: true,
+      });
+      router.push("/account/admin");
+      alert(response.data.msg);
+    } catch (error) {
+      console.error("Error adding product:", error);
+    }
   };
 
   return (

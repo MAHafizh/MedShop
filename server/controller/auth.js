@@ -45,6 +45,7 @@ export const Me = async (req, res) => {
       "image_link",
       "phone",
       "date_of_birth",
+      "address"
     ],
     where: {
       uuid: req.session.uuid,

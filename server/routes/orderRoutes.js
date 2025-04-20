@@ -8,6 +8,7 @@ import {
   getOrderItemById,
   createInvoice,
   setShippingOrderStatus,
+  deleteOrder,
 } from "../controller/order.js";
 const router = express.Router();
 
@@ -16,7 +17,8 @@ router.get("/checkout", VerifyUser, getOrderItemById);
 router.post("/order", VerifyUser, createOrder);
 router.get("/order", VerifyUser, getOrder);
 router.patch("/order/:uuid", VerifyUser, setShippingOrderStatus);
+router.delete("/order/:uuid", VerifyUser, deleteOrder);
 router.get("/order/me", VerifyUser, getOrderById);
-router.get("/order/invoice/:uuid", VerifyUser, createInvoice);
+router.post("/order/invoice", VerifyUser, createInvoice);
 
 export default router;

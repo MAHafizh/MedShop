@@ -148,24 +148,8 @@ export const setShippingOrderStatus = async (req, res) => {
   }
 };
 
-export const deleteOrder = async (req, res) => {
-  const { uuid } = req.params;
-  try {
-    const order = await Order.findOne({
-      where: { uuid },
-    });
-    order.status = "Shipping";
-    await order.save();
-    res.status(200).json({ msg: "Order Shipped" });
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-export const deleteCart = async (req, res) => {};
-
 export const createInvoice = async (req, res) => {
-  const { uuid } = req.params;
+  const { uuid } = req.body;
   console.log("orderUuid", uuid);
   try {
     const order = await Order.findOne({
@@ -217,14 +201,6 @@ export const createInvoice = async (req, res) => {
     };
     const buffer = await pdf.create(document, option);
     fs.writeFileSync(fullpath, buffer);
-    // res
-    //   .status(200)
-    //   .set({
-    //     "Content-Type": "application/pdf",
-    //     "Content-Disposition": `attachment; filename="invoice-${order.uuid}.pdf"`,
-    //   })
-    //   .send(buffer);
-
     await sendInvoiceByEmail(
       order.user.email,
       `Invoice Order ${order.uuid}`,
@@ -233,5 +209,25 @@ export const createInvoice = async (req, res) => {
     );
   } catch (error) {
     console.error(error);
+  }
+};
+
+export const deleteOrder = async (req, res) => {
+  const order = await Order.findOne({
+    where: {
+      uuid: req.params.uuid,
+    },
+  });
+  if (!order) return res.status(404).json({ msg: "Order tidak ditemukan" });
+  if(order.isShipped) return res.status(200).json({ msg: "Order Has Been Shipped" });
+  try {
+    await Order.destroy({
+      where: {
+        uuid: order.uuid,
+      },
+    });
+    res.status(200).json({ msg: "Order berhasil dihapus" });
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
   }
 };

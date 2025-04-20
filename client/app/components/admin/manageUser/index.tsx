@@ -15,6 +15,7 @@ const ManageUser = ({ uuid }: { uuid: string }) => {
     email: "",
     phone: "",
     role: "",
+    address: "",
     userImage: null as string | null,
     userFile: null,
   });
@@ -30,6 +31,7 @@ const ManageUser = ({ uuid }: { uuid: string }) => {
           email: response.data.email,
           phone: response.data.phone,
           role: response.data.role,
+          address: response.data.address,
           userImage: response.data.image_link,
           userFile: null,
         });
@@ -70,6 +72,7 @@ const ManageUser = ({ uuid }: { uuid: string }) => {
     formData.append("email", form.email);
     formData.append("phone", form.phone);
     formData.append("role", form.role);
+    formData.append("address", form.address);
     if (form.userFile) {
       formData.append("UserImage", form.userFile);
     }
@@ -169,6 +172,21 @@ const ManageUser = ({ uuid }: { uuid: string }) => {
                   value={form.phone}
                   onChange={handleChange}
                   id="phone"
+                  type="text"
+                  className="w-full"
+                />
+              </div>
+            </div>
+
+            <div>
+              <div className="w-full">
+                <div className="mb-2 block">
+                  <Label htmlFor="address" value="Address" />
+                </div>
+                <TextInput
+                  value={form.address}
+                  onChange={handleChange}
+                  id="address"
                   type="text"
                   className="w-full"
                 />
